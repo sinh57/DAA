@@ -1,0 +1,37 @@
+# Function to solve 0/1 Knapsack problem using Dynamic Programming (Space Optimized)
+def knapSack(W, wt, val, n):
+    """
+    W: Maximum capacity of knapsack
+    wt: List of weights of items
+    val: List of values of items
+    n: Number of items
+    """
+    
+    # Step 1: Initialize dp array
+    # dp[w] will store maximum value for capacity w
+    dp = [0 for i in range(W + 1)]
+
+    # Step 2: Loop through each item
+    for i in range(1, n + 1):
+        # Loop through capacities from W down to 1 (backwards to avoid overwriting)
+        for w in range(W, 0, -1):
+            # If current item can fit in knapsack of capacity w
+            if wt[i - 1] <= w:
+                # Decide: include this item or not
+                dp[w] = max(dp[w], dp[w - wt[i - 1]] + val[i - 1])
+
+    # Step 3: dp[W] contains the maximum value for full capacity
+    return dp[W]
+
+
+# Driver code
+val = [60, 100, 120]  # Values of items
+wt = [10, 20, 30]     # Weights of items
+W = 50                # Maximum capacity of knapsack
+n = len(val)          # Number of items
+
+# Function call to find maximum value
+max_value = knapSack(W, wt, val, n)
+
+# Print the result
+print("Maximum value in knapsack =", max_value)

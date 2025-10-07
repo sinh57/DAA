@@ -1,0 +1,89 @@
+# Node class for Huffman Tree
+class Node:
+    def __init__(self, prob, symbol, left=None, right=None):
+        self.prob = prob      # Probability/frequency of the symbol
+        self.symbol = symbol  # Character or combined characters
+        self.left = left      # Left child node
+        self.right = right    # Right child node
+        self.code = ''        # 0 for left branch, 1 for right branch
+
+
+# Function to calculate frequency of each character in input data
+def calculate_frequency(data):
+    freq = {}
+    for ch in data:
+        # If character exists, increment its count, else initialize to 1
+        freq[ch] = freq.get(ch, 0) + 1
+    return freq
+
+
+# Function to generate Huffman codes by traversing the Huffman Tree
+def generate_codes(node, current_code='', codes={}):
+    code = current_code + str(node.code)  # Append current node's code (0 or 1)
+
+    # Recursively traverse left subtree
+    if node.left:
+        generate_codes(node.left, code, codes)
+    # Recursively traverse right subtree
+    if node.right:
+        generate_codes(node.right, code, codes)
+
+    # If leaf node (no children), assign the accumulated code to symbol
+    if not node.left and not node.right:
+        codes[node.symbol] = code
+    
+    return codes
+
+
+# Function to encode input data using Huffman codes
+def encode_data(data, codes):
+    encoded = ''.join(codes[ch] for ch in data)  # Replace each char with its code
+    print("Encoded output:", encoded)
+    return encoded
+
+
+# Function to calculate and print compression gain
+def compression_gain(data, codes):
+    original_bits = len(data) * 8  # Each character normally takes 8 bits
+    compressed_bits = sum(len(codes[ch]) * data.count(ch) for ch in codes)
+    print("Space before compression (bits):", original_bits)
+    print("Space after compression (bits):", compressed_bits)
+
+
+# Main function to perform Huffman Encoding
+def huffman_encoding(data):
+    # Step 1: Calculate frequency of each symbol
+    freq = calculate_frequency(data)
+
+    # Step 2: Create a list of nodes for the Huffman Tree
+    nodes = [Node(prob, symbol) for symbol, prob in freq.items()]
+
+    # Step 3: Build Huffman Tree
+    while len(nodes) > 1:
+        # Sort nodes based on probability (smallest first)
+        nodes = sorted(nodes, key=lambda n: n.prob)
+        # Take two nodes with smallest probability
+        left = nodes.pop(0)
+        right = nodes.pop(0)
+        # Assign 0 to left and 1 to right
+        left.code = 0
+        right.code = 1
+        # Combine two nodes into a new parent node
+        combined = Node(left.prob + right.prob, left.symbol + right.symbol, left, right)
+        nodes.append(combined)  # Add parent node back to the list
+
+    # Step 4: Generate Huffman Codes from the tree
+    codes = generate_codes(nodes[0])
+    print("Huffman codes:", codes)
+
+    # Step 5: Calculate space usage before and after compression
+    compression_gain(data, codes)
+
+    # Step 6: Encode the data using the generated Huffman codes
+    encode_data(data, codes)
+
+
+# Example usage
+if __name__ == "__main__":
+    text = input("Enter the text to encode: ")
+    huffman_encoding(text)

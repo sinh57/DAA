@@ -1,0 +1,46 @@
+N = 4  # Size of the chessboard (4x4)
+
+# Function to print the board
+def printBoard(board):
+    for row in board:
+        print(" ".join(str(x) for x in row))  # Print each row
+    print()  # Blank line after the board
+
+# Function to check if it's safe to place a queen at (row, col)
+def isSafe(board, row, col):
+    # Check left side of current row
+    for i in range(col):
+        if board[row][i] == 1:  # Another queen in the same row
+            return False
+
+    # Check upper-left diagonal
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:  # Another queen in upper-left diagonal
+            return False
+
+    # Check lower-left diagonal
+    for i, j in zip(range(row, N), range(col, -1, -1)):
+        if board[i][j] == 1:  # Another queen in lower-left diagonal
+            return False
+
+    return True  # Safe to place queen
+
+# Recursive function to solve N-Queens problem
+def solveNQ(board, col=0):
+    if col >= N:  # All queens are placed successfully
+        printBoard(board)  # Print one feasible solution
+        return True
+
+    for row in range(N):
+        if isSafe(board, row, col):  # Check if we can place queen
+            board[row][col] = 1       # Place queen
+            if solveNQ(board, col + 1):  # Recur for next column
+                return True
+            board[row][col] = 0       # Backtrack if not solution
+
+    return False  # If queen cannot be placed in any row
+
+# Driver code
+board = [[0]*N for _ in range(N)]  # Initialize empty board
+if not solveNQ(board):
+    print("No solution exists")

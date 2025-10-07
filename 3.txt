@@ -1,0 +1,41 @@
+# Function to calculate maximum value in Fractional Knapsack
+def fractionalKnapsack(W, items):
+    """
+    W: Capacity of knapsack
+    items: List of tuples (value, weight)
+    """
+
+    # Step 1: Sort items by value-to-weight ratio in descending order
+    # More valuable items per unit weight come first
+    items.sort(key=lambda x: x[0] / x[1], reverse=True)
+
+    total_value = 0.0  # To store total value added to knapsack
+
+    # Step 2: Loop through each item
+    for value, weight in items:
+        if weight <= W:
+            # If item fits completely, take it
+            W -= weight              # Reduce remaining capacity
+            total_value += value     # Add full item value
+        else:
+            # If item cannot fit completely, take fractional part
+            fraction = W / weight    # Fraction we can take
+            total_value += value * fraction  # Add fractional value
+            break  # Knapsack is full, stop adding
+
+    # Step 3: Return total maximum value
+    return total_value
+
+
+# Driver code
+if __name__ == "__main__":
+    W = 50  # Knapsack capacity
+
+    # List of items as (value, weight)
+    items = [(60, 10), (100, 20), (120, 30)]
+
+    # Calculate maximum value
+    max_val = fractionalKnapsack(W, items)
+
+    # Print result
+    print("Maximum value we can obtain =", max_val)

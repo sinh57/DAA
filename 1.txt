@@ -1,0 +1,75 @@
+Method 1 (Use Non-recursion)
+                    
+1.11
+# Simple Fibonacci sequence program
+
+n = int(input("How many terms? "))
+
+a, b = 0, 1  # first two terms
+
+if n <= 0:
+    print("Enter a positive number.")
+else:
+    print("Fibonacci sequence:")
+    for i in range(n):
+        print(a)
+        a, b = b, a + b
+------------------------------------------------------
+
+
+1.12- (Use Recursion)
+
+# Program to display the Fibonacci sequence up to n-th term
+
+# Step 1: Take the number of terms as input from the user
+nterms = int(input("How many terms? "))
+
+# Step 2: Initialize the first two Fibonacci numbers
+n1, n2 = 0, 1
+count = 0  # variable to count how many terms are printed
+
+# Step 3: Check if the entered number is valid
+if nterms <= 0:
+    # If the number is less than or equal to zero, show an error message
+    print("Please enter a positive integer")
+
+# Step 4: If user wants only one term, print the first number (0)
+elif nterms == 1:
+    print("Fibonacci sequence up to", nterms, ":")
+    print(n1)
+
+# Step 5: If more than one term, use a loop to generate the sequence
+else:
+    print("Fibonacci sequence:")
+    while count < nterms:  # loop until we print all required terms
+        print(n1)          # print the current term
+        nth = n1 + n2      # calculate the next term
+        n1 = n2            # move n2 to n1
+        n2 = nth           # move nth to n2
+        count += 1         # increase term count by 1
+----------------------------------------------------------------
+
+1.21
+
+# Python program to display the Fibonacci sequence using recursion
+
+# Function to return the nth Fibonacci number
+def recur_fibo(n):
+    # Base condition: for first two numbers (0 and 1)
+    if n <= 1:
+        return n
+    else:
+        # Recursive call: sum of previous two Fibonacci numbers
+        return recur_fibo(n-1) + recur_fibo(n-2)
+
+# Take input from the user
+nterms = int(input("How many terms? "))
+
+# Check if the input is valid
+if nterms <= 0:
+    print("Please enter a positive integer")
+else:
+    print("Fibonacci sequence:")
+    # Print Fibonacci sequence up to nterms
+    for i in range(nterms):
+        print(recur_fibo(i))
