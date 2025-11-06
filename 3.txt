@@ -9,6 +9,11 @@ def fractionalKnapsack(W, items):
     # More valuable items per unit weight come first
     items.sort(key=lambda x: x[0] / x[1], reverse=True)
 
+        #   def sort_key(x):
+         #        return x[0] / x[1]
+          # items.sort(key=sort_key, reverse=True)
+
+
     total_value = 0.0  # To store total value added to knapsack
 
     # Step 2: Loop through each item
