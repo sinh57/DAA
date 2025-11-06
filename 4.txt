@@ -9,16 +9,24 @@ def knapSack(W, wt, val, n):
     
     # Step 1: Initialize dp array
     # dp[w] will store maximum value for capacity w
+    #0 means “no value achievable yet” (empty knapsack). basic case of dynamic programming 
+
     dp = [0 for i in range(W + 1)]
 
     # Step 2: Loop through each item
     for i in range(1, n + 1):
         # Loop through capacities from W down to 1 (backwards to avoid overwriting)
         for w in range(W, 0, -1):
+
+#Backward looping =  ensures 0/1 behavior (each item once)
+#Forward looping =  would allow reusing the same item multiple times
+
             # If current item can fit in knapsack of capacity w
             if wt[i - 1] <= w:
                 # Decide: include this item or not
                 dp[w] = max(dp[w], dp[w - wt[i - 1]] + val[i - 1])
+#Excluding the item → dp[w]
+#Including the item → dp[w - wt[i-1]] + val[i-1]
 
     # Step 3: dp[W] contains the maximum value for full capacity
     return dp[W]
