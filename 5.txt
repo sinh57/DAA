@@ -2,9 +2,10 @@ N = 4  # Size of the chessboard (4x4)
 
 # Function to print the board
 def printBoard(board):
-    for row in board:
-        print(" ".join(str(x) for x in row))  # Print each row
-    print()  # Blank line after the board
+    for row in board:  # Iterate through each row (which is a list)
+        print(" ".join(str(x) for x in row))  # Convert each element to string and join with space
+    print()  # Print a blank line for better readability
+
 
 # Function to check if it's safe to place a queen at (row, col)
 def isSafe(board, row, col):
@@ -14,12 +15,15 @@ def isSafe(board, row, col):
             return False
 
     # Check upper-left diagonal
+    # (start from row ,stop before -1 i.e 0, step by -1)
     for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+           #row upward ,column leftwards
         if board[i][j] == 1:  # Another queen in upper-left diagonal
             return False
 
     # Check lower-left diagonal
     for i, j in zip(range(row, N), range(col, -1, -1)):
+                           #Move down & left
         if board[i][j] == 1:  # Another queen in lower-left diagonal
             return False
 
